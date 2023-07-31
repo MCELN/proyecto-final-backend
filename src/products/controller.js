@@ -34,9 +34,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:pid', async (req, res) => {
     try {
-        const products = await arrProducts();
         const { pid } = req.params;
-        const product = products.find(p => p.id === Number(pid));
+        const product = pM.getProductById(Number(pid));
         if(product) {
             res.json({ message: product });
         } else {
@@ -63,9 +62,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:pid', async (req, res) => {
     try {
-        const products = await arrProducts();
         const { pid } = req.params;
-        const product = products.find(p => p.id === Number(pid));
+        const product = pM.getProductById(Number(pid));
         const modProp = Object.keys(req.body);
         if(modProp.includes('id')) {
             res.json({ message: `La id del producto no puede ser modificada`});
@@ -88,8 +86,7 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     try {
         const { pid } = req.params;
-        const products = await arrProducts();
-        const exists = products.find(p => p.id === Number(pid));
+        const exists = pM.getProductById(Number(pid));
         if(exists) {
             await pM.deleteProduct(Number(pid));
             res.json({ message: `${exists.title} ha sido eliminado.`})

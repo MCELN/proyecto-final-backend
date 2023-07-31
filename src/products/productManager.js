@@ -29,7 +29,7 @@ class ProductManager {
       category,
       stock,
     }
-    console.log(newProduct);
+    
     this.#products.push(newProduct);
 
     try {
@@ -47,9 +47,9 @@ class ProductManager {
   getProductById(id) {
     const product = this.#products.find(p => p.id === id);
     if(product) {
-        console.log('Producto encontrado: ', product);
+        return product;
     } else {
-        console.log(`El producto con id ${id} no ha sido encontrado.`);
+        return;
     }
   }
 
