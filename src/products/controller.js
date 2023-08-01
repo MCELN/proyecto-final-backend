@@ -90,8 +90,9 @@ router.delete('/:pid', async (req, res) => {
         if(exists) {
             await pM.deleteProduct(Number(pid));
             res.json({ message: `${exists.title} ha sido eliminado.`})
-        }
+        } else {
         res.status(404).json({ message: `El producto con id: ${pid} no existe.`})
+        }
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});
     }

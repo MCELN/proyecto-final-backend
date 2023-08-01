@@ -46,27 +46,35 @@ const pM = new ProductManager;
 
                 if(product) {
                     try {
+                        if(idProduct.stock > 0) {
                         product.quantity += 1;
                         await fs.promises.writeFile(this.#path, JSON.stringify(this.#cart))
                         .then(await pM.updateProduct( pid, 'stock', idProduct.stock -1));
                         return 'El producto se ha agregado exitosamente.';
+                    } else {
+                        return 'Lo sentimos. El producto está sin stock.';
+                    }
                     } catch (error) {
-                        return 'El producto no se pudo agregar correctamente';                   
+                        console.log(error, 'El producto no se pudo agregar correctamente');                   
                     }
                 } else {
-                    const newProduct = {
-                        pid,
-                        quantity: 1,
-                    }
-
-                    cartProduct.products.push(newProduct);
-
                     try {
-                        await fs.promises.writeFile(this.#path, JSON.stringify(this.#cart))
-                        .then(await pM.updateProduct( pid, 'stock', idProduct.stock -1));
-                        return 'El producto se ha agregado exitosamente.';
+                        if(idProduct.stock > 0) {
+                            const newProduct = {
+                                pid,
+                                quantity: 1,
+                            }
+
+                            cartProduct.products.push(newProduct);
+
+                            await fs.promises.writeFile(this.#path, JSON.stringify(this.#cart))
+                            .then(await pM.updateProduct( pid, 'stock', idProduct.stock -1));
+                            return 'El producto se ha agregado exitosamente.';
+                        } else {
+                            return 'Lo sentimos. El producto está sin stock.';
+                        }
                     } catch (error) {
-                        return 'El producto no se pudo agregar correctamente';                    
+                        console.log(error, 'El producto no se pudo agregar correctamente');                    
                     }
                 }
             }

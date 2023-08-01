@@ -30,7 +30,12 @@ router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const answer = await cM.addCart(Number(cid), Number(pid));
-        res.json({ message: `${answer}`});
+        if(answer === 'El producto se ha agregado exitosamente.') {
+            res.json({ message: `${answer}`});
+        } else {
+            res.status(404).json({ message: answer })
+        }
+        
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});        
     }
