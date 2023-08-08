@@ -3,23 +3,13 @@ const ProductManager = require('./productManager');
 
 const pM = new ProductManager();
 
-const arrProducts = async () => {
-    try {
-        const arrProduct = await pM.getProducts();
-        arrProduct.splice(0, 1);
-        return arrProduct;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 
 const router = Router();
 
 
 router.get('/', async (req, res) => {
     try {
-        const products = await arrProducts();
+        const products = await pM.getProducts();
         const MAX_PRODUCT = products.length;
         const { limit } = req.query;
         const productFilter = products.slice(0, limit || MAX_PRODUCT);
@@ -51,8 +41,13 @@ router.get('/:pid', async (req, res) => {
 router.post('/', async (req, res) => {
     try {        
         const product = req.body;
-        const answer = await pM.addProduct(product);
-        res.json({ message: `${answer}`});
+        if(product.status === checked) {
+            product.status = true;
+        } else {
+            product.status = false;
+        };
+        await pM.addProduct(product);
+        res.redirect( '/realtimeproducts' );
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});
     }

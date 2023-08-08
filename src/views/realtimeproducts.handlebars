@@ -1,0 +1,47 @@
+<h1>Real Time Products</h1>
+
+<h2>Productos</h2>
+
+<div class="container">
+    {{#each products}}
+        <div class="card">
+            <h3>{{ this.title }}</h3>
+            <img src="{{ this.thumbnail }}" onerror="this.src='/asset/no-image.jpg'" alt="" / >
+            <p>{{ this.description }}</p>
+            <span>Price: $ {{ this.price }}</span>
+        </div>
+    {{/each}}
+</div>
+
+<form id="addProduct">
+
+    <label for="title">Título: </label>
+    <input type="text" name="title">
+
+    <label for="description">Descripción: </label>
+    <input type="text" name="description">
+
+    <label for="thumbnail">Url imagen: </label>
+    <input type="text" name="thumbnail">
+
+    <label for="code">Código: </label>
+    <input type="text" name="code">
+
+    <label for="status">Estatus: </label>
+    <input type="checkbox" name="status">
+
+    <label for="category">Categoría: </label>
+    <input type="text" name="category">
+
+    <label for="price">Precio: </label>
+    <input type="number" name="price">
+
+    <label for="stock">Stock: </label>
+    <input type="text" name="stock">
+
+    <button type="submit">Agregar Producto</button>
+</form>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtimeproducts.js"></script>

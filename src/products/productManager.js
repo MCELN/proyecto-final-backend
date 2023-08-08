@@ -17,6 +17,12 @@ class ProductManager {
     if(this.#products.find(p => p.code === code)) {
       return 'El código ingresado ya existe.';      
     }
+
+    if(status === 'on') {
+      status = true;
+    } else {
+      status = false;
+    }
     
     const newProduct = {
       id: ++this.#products[0].idProduct,
@@ -41,7 +47,13 @@ class ProductManager {
   }
   
   async getProducts() {
-    return JSON.parse(await fs.promises.readFile(this.#path, 'utf-8'));
+    try {
+      const products = JSON.parse(await fs.promises.readFile(this.#path, 'utf-8'));
+      products.splice(0, 1);
+      return products;
+  } catch (error) {
+      console.log(error);
+  }
   }
 
   getProductById(id) {
@@ -62,11 +74,10 @@ class ProductManager {
         await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
 
       } catch (error) {
-        console.log('El producto no se pudo guardar correctamente');
+        console.log(error, 'El producto no se pudo guardar correctamente');
       }
     } else {
       console.log('El producto que intenta editar no existe en la lista.');
-      return;
     }
 
   }
@@ -82,7 +93,7 @@ class ProductManager {
         await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
   
       } catch (error) {
-        console.log('Error en la actualización del archivo');
+        console.log(error, 'Error en la actualización del archivo');
       }
 
     } else {
