@@ -8,6 +8,7 @@ const realTimeServer = ( httpServer ) => {
     const io = new Server( httpServer );
 
     io.on( 'connection', socket => {
+        console.log( `Cliente con id ${ socket.id } conectado.`)
         socket.on( 'addProd', async data => {
             try {
                 await pM.addProduct(data);
@@ -19,4 +20,4 @@ const realTimeServer = ( httpServer ) => {
     })
 }
 
-module.exports = realTimeServer;
+module.exports = realTimeServer; 
