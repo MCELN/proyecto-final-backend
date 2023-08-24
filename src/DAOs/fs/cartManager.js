@@ -1,4 +1,4 @@
-const ProductManager = require('../products/productManager');
+const ProductManager = require( './products.dao' );
 const fs = require('fs');
 
 const pM = new ProductManager;
@@ -29,7 +29,9 @@ class CartManager {
         }
     }
 
-    async addCart( cid, pid ) {
+    async insertOne( cid, pid ) {
+        cid = Number(cid);
+        pid = Number(pid);
         if(this.#cart.length > 1) {
 
             const cartProduct = this.#cart.find(p => p.id === cid);
@@ -82,11 +84,11 @@ class CartManager {
     }
 
 
-    async getCart() {
+    async findAllRaw() {
         return JSON.parse(await fs.promises.readFile(this.#path, 'utf-8'));
     }
 
-    async getCartById(id) {
+    async findId(id) {
         const product = this.#cart.find(p => p.id === id);
         if(product) {
             return product.products;

@@ -43,11 +43,8 @@ router.get('/:pid', async (req, res) => {
 router.post('/', async (req, res) => {
     try {        
         const { title, description, price, thumbnail = [], code, status, category, stock } = req.body;
-        if(status === checked) {
-            status = true;
-        } else {
-            status = false;
-        };
+        
+        const productStatus = status === 'on' ? true : false;
 
         const product = {
             title,
@@ -55,7 +52,7 @@ router.post('/', async (req, res) => {
             price,
             thumbnail,
             code,
-            status,
+            status: productStatus,
             category,
             stock,
         };

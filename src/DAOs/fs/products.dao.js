@@ -9,7 +9,7 @@ class ProductManager {
     this.#products = fs.existsSync(this.#path) ? JSON.parse(fs.readFileSync(this.#path, 'utf-8')) : [{idProduct: 0}];
   }
 
-  async addProduct ({title, description, price, thumbnail = [], code, status = true, category, stock}) {
+  async insertOne ({title, description, price, thumbnail = [], code, status = true, category, stock}) {
     if(!title || !description || !price || !code || !category || !stock) {
       return 'Los únicos campos que no son obligatorios son:  thumbnail y status.';
     }
@@ -46,7 +46,7 @@ class ProductManager {
     }
   }
   
-  async getProducts() {
+  async findAllRaw() {
     try {
       const products = JSON.parse(await fs.promises.readFile(this.#path, 'utf-8'));
       products.splice(0, 1);
@@ -56,7 +56,7 @@ class ProductManager {
   }
   }
 
-  getProductById(id) {
+  findId(id) {
     const product = this.#products.find(p => p.id === id);
     if(product) {
         return product;
@@ -65,7 +65,7 @@ class ProductManager {
     }
   }
 
-  async updateProduct (id, field, value){
+  async updateOne (id, field, value){
     const index = this.#products.findIndex(p => p.id === id);
     
     if(index >= 0) {
@@ -82,7 +82,7 @@ class ProductManager {
 
   }
 
-  async deleteProduct(id) {
+  async deleteOne( id ) {
     const index = this.#products.findIndex(p => p.id === id);
 
     if(index >= 0) {  

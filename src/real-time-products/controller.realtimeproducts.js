@@ -7,8 +7,7 @@ const router = Router();
 
 router.get( '/', async ( req, res ) => {
     try {
-        const products = await ProductsDao.findAll();
-        console.log(products)
+        const products = await ProductsDao.findAllRaw();
         res.render( 
             'realtimeproducts', 
             { 

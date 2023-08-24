@@ -1,7 +1,10 @@
 const { Server } = require( 'socket.io' );
 const Products = require( './DAOs/mongodb/products.dao' );
+const Chat = require( './DAOs/mongodb/chat.dao' );
 
 const ProductsDao = new Products();
+const ChatDao = new Chat();
+
 
 
 const realTimeServer = ( httpServer ) => {
@@ -16,6 +19,20 @@ const realTimeServer = ( httpServer ) => {
             } catch (error) {
                 console.log(error);
             }
+        })
+
+        socket.on( 'message', async (data) => {
+            await ChatDao.insertOne( data );
+            const messages = await ChatDao.findAllRaw();
+            
+            io.emit( 'messageLogs', messages )
+        })
+        
+        socket.on( 'auth', async (data) => {
+            const messages = await ChatDao.findAllRaw();
+            socket.emit( 'messageLogs', messages );
+
+            socket.broadcast.emit( 'newUser', data );
         })
     })
 }

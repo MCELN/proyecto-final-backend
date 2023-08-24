@@ -1,7 +1,8 @@
 const prodController = require('../products/controller.products');
-const cartController = require('../cart/controller');
+const cartController = require('../cart/controller.cart');
 const homeController = require('../home/controller.home');
 const rtpController  = require('../real-time-products/controller.realtimeproducts');
+const chatController = require('../chat/controller.chat');
 
 
 const router = (app) => {
@@ -9,6 +10,7 @@ const router = (app) => {
     app.use( '/api/carts', cartController );
     app.use( '/home', homeController );
     app.use( '/realtimeproducts', rtpController );
+    app.use( '/chat', chatController );
     app.use( '/*', ( req, res ) => {
         res.status(404).json({ message: 'Página no encontrada' });
     });

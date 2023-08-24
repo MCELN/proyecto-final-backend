@@ -1,16 +1,14 @@
 const { Router } = require('express');
-const CartManager = require('./cartManager');
-const ProductManager = require('../products/productManager');
+const Cart = require('../DAOs/mongodb/cart.dao')
 
-const cM = new CartManager;
-const pM = new ProductManager;
+const CartDao = new Cart();
 
 const router = Router();
 
 router.get('/:cid', async ( req, res ) => {
     try {
         const { cid } = req.params;
-        const cartProducts = await cM.getCartById(Number(cid));
+        const cartProducts = await CartDao.findId( cid );
         res.json({ message: cartProducts });
     } catch (error) {
         res.status(500).json({error: 'Error al obtener los productos.'});        
@@ -19,7 +17,7 @@ router.get('/:cid', async ( req, res ) => {
 
 router.post('/', async (req, res) => {
     try {
-        const answer = await cM.createCart();
+        const answer = await CartDao.createCart();
         res.json({ message: `${answer}`});
     } catch (error) {
         res.status(500).json({error: 'No se ha podido crear el carrito.'});        
@@ -29,12 +27,8 @@ router.post('/', async (req, res) => {
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const answer = await cM.addCart(Number(cid), Number(pid));
-        if(answer === 'El producto se ha agregado exitosamente.') {
+        const answer = await CartDao.insertOne( cid, pid );
             res.json({ message: `${answer}`});
-        } else {
-            res.status(404).json({ message: answer })
-        }
         
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});        

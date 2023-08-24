@@ -22,7 +22,7 @@ const probando = [
 
 router.get( '/', async ( req, res ) => {
     try {
-        const products = await ProductsDao.findAll();
+        const products = await ProductsDao.findAllRaw();
 
         
         res.render( 
