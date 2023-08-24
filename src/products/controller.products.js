@@ -1,15 +1,17 @@
-const { Router } = require('express');
-const ProductManager = require('./productManager');
+const { Router } = require( 'express' );
+const Products = require( '../DAOs/mongodb/products.dao' );
+//const ProductManager = require('./productManager');
 
-const pM = new ProductManager();
+//const pM = new ProductManager();
 
+const ProductsDao = new Products();
 
 const router = Router();
 
 
 router.get('/', async (req, res) => {
     try {
-        const products = await pM.getProducts();
+        const products = await ProductsDao.findAll();
         const MAX_PRODUCT = products.length;
         const { limit } = req.query;
         const productFilter = products.slice(0, limit || MAX_PRODUCT);
@@ -25,7 +27,7 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     try {
         const { pid } = req.params;
-        const product = pM.getProductById(Number(pid));
+        const product = await ProductsDao.findId( pid );
         if(product) {
             res.json({ message: product });
         } else {
@@ -40,13 +42,25 @@ router.get('/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {        
-        const product = req.body;
-        if(product.status === checked) {
-            product.status = true;
+        const { title, description, price, thumbnail = [], code, status, category, stock } = req.body;
+        if(status === checked) {
+            status = true;
         } else {
-            product.status = false;
+            status = false;
         };
-        await pM.addProduct(product);
+
+        const product = {
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            status,
+            category,
+            stock,
+        };
+
+        const response = await ProductsDao.insertOne( product );
         res.redirect( '/realtimeproducts' );
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});
@@ -58,14 +72,14 @@ router.post('/', async (req, res) => {
 router.put('/:pid', async (req, res) => {
     try {
         const { pid } = req.params;
-        const product = pM.getProductById(Number(pid));
+        const product = ProductsDao.findId( pid );
         const modProp = Object.keys(req.body);
         if(modProp.includes('id')) {
             res.json({ message: `La id del producto no puede ser modificada`});
         }
         if(modProp.length > 0 && product) {
             for (const prop of modProp) {
-                await pM.updateProduct(Number(pid), prop, req.body[prop]);
+                await ProductsDao.updateOne( pid, prop, req.body[prop]);
             }
             res.json({ message: `${product.title} ha sido modificado.`});
         } else if(!product) {
@@ -81,9 +95,9 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     try {
         const { pid } = req.params;
-        const exists = pM.getProductById(Number(pid));
+        const exists = ProductsDao.findId( pid );
         if(exists) {
-            await pM.deleteProduct(Number(pid));
+            await ProductsDao.deleteOne( pid );
             res.json({ message: `${exists.title} ha sido eliminado.`})
         } else {
         res.status(404).json({ message: `El producto con id: ${pid} no existe.`})

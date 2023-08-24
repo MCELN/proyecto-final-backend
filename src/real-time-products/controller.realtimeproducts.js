@@ -1,15 +1,16 @@
-const { Router }     = require( 'express' );
-const ProductManager = require( '../products/productManager' );
+const { Router } = require( 'express' );
+const Products   = require( '../DAOs/mongodb/products.dao')
 
-const pM = new ProductManager();
+const ProductsDao = new Products();
 
 const router = Router();
 
 router.get( '/', async ( req, res ) => {
     try {
-        const products = await pM.getProducts();
+        const products = await ProductsDao.findAll();
+        console.log(products)
         res.render( 
-            'realTimeProducts', 
+            'realtimeproducts', 
             { 
                 products,
                 style: 'home.css',

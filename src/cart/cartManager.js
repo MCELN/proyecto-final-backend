@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const pM = new ProductManager;
 
- class CartManager {
+class CartManager {
     #path = '';
     #cart = [];
 
@@ -94,6 +94,6 @@ const pM = new ProductManager;
             return;
         }
     }
- }
+}
 
- module.exports = CartManager;
+module.exports = CartManager;
