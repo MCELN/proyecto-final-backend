@@ -13,8 +13,23 @@ const realTimeServer = ( httpServer ) => {
     io.on( 'connection', socket => {
         console.log( `Cliente con id ${ socket.id } conectado.`)
         socket.on( 'addProd', async data => {
-            try {
-                await ProductsDao.insertOne(data);
+            try {            
+                const { title, description, price, thumbnail = [], code, status, category, stock } = data;
+        
+                const productStatus = status === 'on' ? true : false;
+
+                const product = {
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    code,
+                    status: productStatus,
+                    category,
+                    stock,
+                };    
+                await ProductsDao.insertOne(product);
+                
                 io.emit( 'newProduct', data.title);
             } catch (error) {
                 console.log(error);
