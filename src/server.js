@@ -1,10 +1,9 @@
+const { port } = require('./config/index.config');
 const app = require('./app');
 const realTimeServer = require('./realTimeServer');
 
-const PORT = 3000;
-
-const httpServer = app.listen( PORT, () => {
-    console.log( `Server running at port ${ PORT }` );
+const httpServer = app.listen( port, () => {
+    console.log( `Server running at port ${ port }` );
 })
 
 realTimeServer( httpServer );

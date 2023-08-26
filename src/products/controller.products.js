@@ -42,21 +42,7 @@ router.get('/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {        
-        const { title, description, price, thumbnail = [], code, status, category, stock } = req.body;
-        
-        const productStatus = status === 'on' ? true : false;
-
-        const product = {
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            status: productStatus,
-            category,
-            stock,
-        };
-
+        const product = req.body;
         const response = await ProductsDao.insertOne( product );
         res.redirect( '/realtimeproducts' );
     } catch (error) {

@@ -14,7 +14,22 @@ class ProductsDao {
     };
 
     async insertOne( newProductInfo ) {
-        const newProduct = await Products.create( newProductInfo );
+        const { title, description, price, thumbnail = [], code, status, category, stock } = newProductInfo;
+        
+            const productStatus = status === 'on' ? true : false;
+
+            const product = {
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                status: productStatus,
+                category,
+                stock,
+            }; 
+            
+        const newProduct = await Products.create( product );
         return newProduct._id;
     };
 
