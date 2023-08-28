@@ -6,7 +6,7 @@ class ProductsDao {
     };
 
     async findAllRaw() {
-        return await Products.find().lean();
+        return await Products.find().collation({locale: 'en', strength: 2 }).sort({title: 1}).lean();
     };
 
     async findId( id ) {

@@ -8,7 +8,11 @@
             <h3>{{ this.title }}</h3>
             <img src="{{ this.thumbnail }}" onerror="this.src='/asset/no-image.jpg'" alt="" / >
             <p>{{ this.description }}</p>
-            <span>Price: $ {{ this.price }}</span>
+            {{#if this.price}}
+                <span>Price: $ {{ this.price }}</span>
+            {{else}}
+                <span>Free</span>
+            {{/if}}
         </div>
     {{/each}}
 </div>
