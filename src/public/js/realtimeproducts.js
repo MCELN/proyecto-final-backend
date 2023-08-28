@@ -11,7 +11,19 @@ addProd.addEventListener( 'submit', async ( e ) => {
 
     products.forEach(( value, key ) => ( obj[key] = value ));
 
-    socket.emit( 'addProd', obj );
+    try {
+        await fetch( '/api/products', {
+            headers: {
+                "Content-type": "application/json",
+            },
+            method: "Post",
+            body: JSON.stringify(obj),
+        });
+        socket.emit( 'addProd', obj );
+    } catch (error) {
+        console.log(error);
+    }
+
 
     addProd.reset();
 })

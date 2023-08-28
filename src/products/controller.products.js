@@ -1,8 +1,5 @@
 const { Router } = require( 'express' );
 const Products = require( '../DAOs/mongodb/products.dao' );
-//const ProductManager = require('./productManager');
-
-//const pM = new ProductManager();
 
 const ProductsDao = new Products();
 
@@ -43,6 +40,7 @@ router.get('/:pid', async (req, res) => {
 router.post('/', async (req, res) => {
     try {        
         const product = req.body;
+        console.log(product)
         const response = await ProductsDao.insertOne( product );
         res.redirect( '/realtimeproducts' );
     } catch (error) {
