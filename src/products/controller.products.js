@@ -8,16 +8,18 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const { limit = 10, page = 1, sort, query, category } = req.query;
+        const { limit = 10, page = 1, sort, category, status } = req.query;
+
+        const pageNum = parseInt(page);
 
         const filter = {};
 
-        if(query){
-            filter = { category: { $regex: query, $options: 'i' } };
-        }
-
         if(category){
             filter.category = category;
+        }
+
+        if(status) {
+            filter.status = status;
         }
 
         const sortO = {};
@@ -32,13 +34,30 @@ router.get('/', async (req, res) => {
             limit,
             page,
             sort: sortO,
+        };       
+        
+        const products = await ProductsDao.paginate(filter, queryOption );
+
+        const { totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = products;
+
+        const prevLink = hasPrevPage ? `/api/products?limit=${limit}&page=${prevPage}${sort ? "&sort="+sort : ""}${status ? "&status="+status : ""}${category ? "&category="+category : ""}` : null;
+        const nextLink = hasNextPage ? `/api/products?limit=${limit}&page=${nextPage}${sort ? "&sort="+sort : ""}${status ? "&status="+status : ""}${category ? "&category="+category : ""}` : null;
+
+
+        const response = {
+            status: 'success',
+            payload: products.docs,
+            totalPages,
+            prevPage,
+            nextPage,
+            page: pageNum,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
         };
 
-
-
-        const products = await ProductsDao.paginate(filter, queryOption );
-        console.log(products.totalDocs)
-        res.json({ message: products });
+        res.json({ message: response });
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener los productos.' });
     }
