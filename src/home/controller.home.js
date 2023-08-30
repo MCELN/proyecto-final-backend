@@ -5,21 +5,6 @@ const ProductsDao = new Products;
 
 const router = Router();
 
-const probando = [
-    {
-        title: 'prueba',
-        description: 'pruebaD',
-        price: 234,
-        id: 'kasjdjfweoih'
-    },
-    {
-        title: 'prueba2',
-        description: 'pruebaD2',
-        price: 2342,
-        id: 'alskdjfl;aj'
-    }
-]
-
 router.get( '/', async ( req, res ) => {
     try {
         const products = await ProductsDao.findAllRaw();

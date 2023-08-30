@@ -1,4 +1,5 @@
 const Products = require( '../../models/products.model' );
+const { paginate } = require('mongoose-paginate-v2');
 
 class ProductsDao {
     async findAll() {
@@ -8,28 +9,17 @@ class ProductsDao {
     async findAllRaw() {
         return await Products.find().collation({locale: 'en', strength: 2 }).sort({title: 1}).lean();
     };
-
+    
     async findId( id ) {
         return await Products.findOne({ _id: id });
     };
 
-    async insertOne( newProductInfo ) {
-        const { title, description, price, thumbnail = [], code, status, category, stock } = newProductInfo;
-        
-            const productStatus = status === 'on' ? true : false;
+    async paginate(filter, queryOption) {
+        return await Products.paginate(filter, queryOption);
+    }
 
-            const product = {
-                title,
-                description,
-                price,
-                thumbnail,
-                code,
-                status: productStatus,
-                category,
-                stock,
-            }; 
-            
-        const newProduct = await Products.create( product );
+    async insertOne( newProductInfo ) {           
+        const newProduct = await Products.create( newProductInfo );
         return newProduct._id;
     };
 

@@ -8,16 +8,41 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     try {
-        const products = await ProductsDao.findAll();
-        const MAX_PRODUCT = products.length;
-        const { limit } = req.query;
-        const productFilter = products.slice(0, limit || MAX_PRODUCT);
-        res.json({ message: productFilter });
-        
+        const { limit = 10, page = 1, sort, query, category } = req.query;
+
+        const filter = {};
+
+        if(query){
+            filter = { category: { $regex: query, $options: 'i' } };
+        }
+
+        if(category){
+            filter.category = category;
+        }
+
+        const sortO = {};
+
+        if(sort === 'asc') {
+            sortO.price = 1;
+        } else if( sort === 'desc') {
+            sortO.price = -1;
+        }
+
+        const queryOption = {
+            limit,
+            page,
+            sort: sortO,
+        };
+
+
+
+        const products = await ProductsDao.paginate(filter, queryOption );
+        console.log(products.totalDocs)
+        res.json({ message: products });
     } catch (error) {
-        res.status(500).json({error: 'Error al obtener los productos.'});
+        res.status(500).json({ error: 'Error al obtener los productos.' });
     }
-})
+});
 
 
 
@@ -38,10 +63,23 @@ router.get('/:pid', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-    try {        
-        const product = req.body;
-        console.log(product)
-        const response = await ProductsDao.insertOne( product );
+    try {
+        const { title, description, price, thumbnail = [], code, status, category, stock } = req.body;
+        
+            const productStatus = status === 'on' ? true : false;
+
+            const newProduct = {
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                status: productStatus,
+                category,
+                stock,
+            }; 
+
+        const response = await ProductsDao.insertOne( newProduct );
         res.redirect( '/realtimeproducts' );
     } catch (error) {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});
@@ -87,9 +125,5 @@ router.delete('/:pid', async (req, res) => {
         res.status(500).json({error: 'No se ha podido agregar el producto.'});
     }
 })
-
-
-
-
 
 module.exports = router;
