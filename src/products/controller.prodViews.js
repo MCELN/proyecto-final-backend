@@ -44,10 +44,13 @@ router.get( '/', async ( req, res ) => {
         const prevLink = hasPrevPage ? `/products?limit=${limit}&page=${prevPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
         const nextLink = hasNextPage ? `/products?limit=${limit}&page=${nextPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
 
+        const cid = "64f07221d6f0ab5437910714";
+
         res.render( 
             'products', 
             { 
                 serializedMessages,
+                cid,
                 prevLink,
                 nextLink,
                 style: 'home.css',

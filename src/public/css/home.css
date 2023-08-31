@@ -99,3 +99,13 @@ form button {
     padding: 5px 10px;
     background-color: rgb(121, 206, 121);
 }
+
+.carritoInProduct {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}

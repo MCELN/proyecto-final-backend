@@ -1,5 +1,7 @@
 <h1>Products</h1>
 
+<a href="/carts/{{cid}}" class="carritoInProduct">Carrito</a>
+
 <div class="container">
     {{#each serializedMessages}}
         <div class="card">
@@ -11,7 +13,7 @@
             {{else}}
                 <span>Free</span>
             {{/if}}
-                <button type="submit">Agregar al Carrito</button>
+                <button class="addToCart" productId="{{this._id}}" cartId="{{../cid}}">Agregar al Carrito</button>
         </div>
     {{/each}}
 </div>
@@ -24,3 +26,5 @@
         <a href={{nextLink}} class="next">Siguiente</a>
     {{/if}}
 </div>
+
+<script src="/js/products.js"></script>
