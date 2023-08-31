@@ -1,6 +1,8 @@
 const { Router } = require( 'express' );
 const Products = require( '../DAOs/mongodb/products.dao' );
+const Cart = require('../DAOs/mongodb/cart.dao');
 
+const CartDao = new Cart();
 const ProductsDao = new Products();
 
 const router = Router();
@@ -44,7 +46,8 @@ router.get( '/', async ( req, res ) => {
         const prevLink = hasPrevPage ? `/products?limit=${limit}&page=${prevPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
         const nextLink = hasNextPage ? `/products?limit=${limit}&page=${nextPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
 
-        const cid = "64f07221d6f0ab5437910714";
+        const carts = await CartDao.findAll();
+        const cid = carts[0]._id;
 
         res.render( 
             'products', 
