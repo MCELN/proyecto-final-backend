@@ -3,7 +3,7 @@
 <h2>Productos</h2>
 
 <div class="container">
-    {{#each products}}
+    {{#each serializedMessages}}
         <div class="card">
             <h3>{{ this.title }}</h3>
             <img src="{{ this.thumbnail }}" onerror="this.src='/asset/no-image.jpg'" alt="" / >

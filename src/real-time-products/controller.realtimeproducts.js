@@ -7,11 +7,13 @@ const router = Router();
 
 router.get( '/', async ( req, res ) => {
     try {
-        const products = await ProductsDao.findAllRaw();
+        const products = await ProductsDao.findAll();
+        const serializedMessages = products.map(product => product.serialize());
+
         res.render( 
             'realtimeproducts', 
             { 
-                products,
+                serializedMessages,
                 style: 'home.css',
             }
         );

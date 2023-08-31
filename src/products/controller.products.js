@@ -5,21 +5,20 @@ const ProductsDao = new Products();
 
 const router = Router();
 
-
 router.get('/', async (req, res) => {
     try {
-        const { limit = 10, page = 1, sort, category, status } = req.query;
+        const { limit = 10, page = 1, sort, query } = req.query;
 
         const pageNum = parseInt(page);
 
-        const filter = {};
+        let filter = {};
 
-        if(category){
-            filter.category = category;
-        }
-
-        if(status) {
-            filter.status = status;
+        if(query) {
+            if (query === 'false' || query === 'true') {
+                filter = {status: query}
+            } else {
+                filter = { category: query};
+            }
         }
 
         const sortO = {};
@@ -38,15 +37,13 @@ router.get('/', async (req, res) => {
         
         const products = await ProductsDao.paginate(filter, queryOption );
 
-        const { totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = products;
+        const { docs, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = products;
 
-        const prevLink = hasPrevPage ? `/api/products?limit=${limit}&page=${prevPage}${sort ? "&sort="+sort : ""}${status ? "&status="+status : ""}${category ? "&category="+category : ""}` : null;
-        const nextLink = hasNextPage ? `/api/products?limit=${limit}&page=${nextPage}${sort ? "&sort="+sort : ""}${status ? "&status="+status : ""}${category ? "&category="+category : ""}` : null;
-
+        const prevLink = hasPrevPage ? `/api/products?limit=${limit}&page=${prevPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
+        const nextLink = hasNextPage ? `/api/products?limit=${limit}&page=${nextPage}${sort ? "&sort="+sort : ""}${query ? "&query="+query : ""}` : null;
 
         const response = {
-            status: 'success',
-            payload: products.docs,
+            payload: docs,
             totalPages,
             prevPage,
             nextPage,
@@ -57,9 +54,9 @@ router.get('/', async (req, res) => {
             nextLink,
         };
 
-        res.json({ message: response });
+        res.json({ status: 'success', response });
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los productos.' });
+        res.status(500).json({ status: 'error' });
     }
 });
 

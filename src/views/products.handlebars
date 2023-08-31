@@ -1,0 +1,26 @@
+<h1>Products</h1>
+
+<div class="container">
+    {{#each serializedMessages}}
+        <div class="card">
+            <h3>{{ this.title }}</h3>
+            <img src="{{ this.thumbnail }}" onerror="this.src='/asset/no-image.jpg'" alt="" / >
+            <p>{{ this.description }}</p>
+            {{#if this.price}}
+                <span>Price: $ {{ price }}</span>
+            {{else}}
+                <span>Free</span>
+            {{/if}}
+                <button type="submit">Agregar al Carrito</button>
+        </div>
+    {{/each}}
+</div>
+<div class="prevNext">
+    {{#if prevLink}}
+        <a href={{prevLink}} class="prev">Anterior</a>
+    {{/if}}
+
+    {{#if nextLink}}
+        <a href={{nextLink}} class="next">Siguiente</a>
+    {{/if}}
+</div>
