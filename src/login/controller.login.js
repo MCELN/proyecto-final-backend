@@ -36,8 +36,6 @@ router.post('/', async (req, res) => {
             }
         }
 
-        console.log(user)
-
         if (!user) {
             res.render('login', {
                 style: 'home.css',
@@ -45,7 +43,6 @@ router.post('/', async (req, res) => {
             });
         } else if (user.email === email && user.password === pass) {
             req.session.user = email;
-            console.log(req.session.user)
             res.redirect('/products')
         } else {
             res.render('login', {
@@ -61,8 +58,11 @@ router.post('/', async (req, res) => {
 
 router.delete('/logout', (req, res) => {
     req.session.destroy(error => {
-        if (!error) res.redirect('/api/session')
-        else res.send({ status: 'Logout ERROR', body: error })
+        if (!error) {
+            res.redirect('/api/session')
+        } else {
+            res.send({ status: 'Logout ERROR', body: error })
+        }
     })
 })
 
