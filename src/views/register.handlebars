@@ -1,0 +1,22 @@
+<h1>Registro</h1>
+
+<form action="/api/session/register" method="post">
+    <label for="first_name">Nombre:</label>
+    <input type="text" name="first_name" placeholder="Nombre">
+
+    <label for="last_name">Apellido:</label>
+    <input type="text" name="last_name" placeholder="Apellido">
+
+    <label for="email">E-Mail:</label>
+    <input type="email" name="email" placeholder="E-Mail">
+
+    <label for="age">Edad:</label>
+    <input type="num" name="age">
+
+    <label for="pass">Contraseña:</label>
+    <input type="password" name="pass" placeholder="Contraseña">
+
+    <button type="submit">Registrar</button>
+</form>
+
+<p>{{response}}</p>

@@ -1,0 +1,16 @@
+<h1>Registro</h1>
+
+<form action="/api/session" method="post">
+
+    <label for="email">E-Mail:</label>
+    <input type="email" name="email" placeholder="E-Mail">
+
+    <label for="pass">Contraseña: </label>
+    <input type="password" name="pass" placeholder="Contraseña">
+
+    <button type="submit">Iniciar Sesión</button>
+</form>
+
+<a href="/api/session/register">Regístrate.</a>
+
+<p>{{response}}</p>

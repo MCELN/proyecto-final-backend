@@ -1,10 +1,16 @@
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const addToCartButtons = document.querySelectorAll('.addToCart');
+    const logout = document.getElementById('logout');
 
+    logout.addEventListener('click', async (e) => {
+        await fetch('/api/session/logout', {
+            method: 'Delete',
+        });
+    });
 
-    addToCartButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
             const productId = button.getAttribute('productId');
             const cartId = button.getAttribute('cartId');
 
@@ -28,10 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         throw new Error('Error al agregar el producto al carrito.');
                     }
                 })
-                .then(function(data) {
+                .then(function (data) {
                     alert('Producto agregado al carrito con éxito.');
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     alert(error.message);
                 });
         });
