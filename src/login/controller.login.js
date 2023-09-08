@@ -28,11 +28,12 @@ router.post('/', async (req, res) => {
     const { email, pass } = req.body;
 
     try {
-        const user = {};
-        if (email === userAdmin.email) {
-            user = userAdmin;
-        } else {
-            user = await UsersDao.findOne(email);
+        let user = await UsersDao.findOne(email);
+
+        if (!user) {
+            if (userAdmin.email === email) {
+                user = userAdmin;
+            }
         }
 
         console.log(user)

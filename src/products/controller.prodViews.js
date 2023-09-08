@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
                 req.session.counter = 1;
             }
             const flag = (req.session.counter === 1);
-            console.log(flag)
+
             const { limit = 10, page = 1, sort, query } = req.query;
 
             const pageNum = parseInt(page);

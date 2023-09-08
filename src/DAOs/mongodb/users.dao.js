@@ -4,8 +4,8 @@ class UsersDao {
     async findOne(email) {
         return await Users.findOne({ email: email })
     }
-    async findOne(email) {
-        return await Users.findOneRaw({ email: email }).lean();
+    async findOneRaw(email) {
+        return await Users.findOne({ email: email }).lean();
     }
 
     async insertOne(newUserInfo) {
