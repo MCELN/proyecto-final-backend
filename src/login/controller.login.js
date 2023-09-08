@@ -36,6 +36,8 @@ router.post('/', async (req, res) => {
             }
         }
 
+        console.log(user);
+
         if (!user) {
             res.render('login', {
                 style: 'home.css',
