@@ -19,8 +19,8 @@ const router = (app) => {
     app.use('/carts', cartVieweController);
     app.use('/api/session', loginController);
     app.use('/api/session/register', registerController);
-    app.use('/*', (req, res) => {
-        res.status(404).json({ message: 'Página no encontrada' });
+    app.use('*', (req, res) => {
+        res.status(404).render('notfound', { style: 'notfound.css' });
     });
 }
 

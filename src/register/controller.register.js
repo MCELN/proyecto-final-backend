@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Users = require('../DAOs/mongodb/users.dao');
+const { getHashedPassword } = require('../routes/utils/bcrypt');
 
 const UsersDao = new Users();
 const router = Router();
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
                 last_name,
                 email,
                 age,
-                password: pass,
+                password: getHashedPassword(pass),
                 status: 'user',
             }
             const newUser = await UsersDao.insertOne(newUserInfo);

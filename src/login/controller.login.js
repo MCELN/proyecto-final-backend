@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Users = require('../DAOs/mongodb/users.dao');
+const { comparePassword } = require('../routes/utils/bcrypt');
 
 const UsersDao = new Users();
 
@@ -43,7 +44,7 @@ router.post('/', async (req, res) => {
                 style: 'home.css',
                 response: 'Usuario o contraseña incorrectos',
             });
-        } else if (user.email === email && user.password === pass) {
+        } else if (user.email === email && comparePassword(pass, user.password)) {
             req.session.user = email;
             res.redirect('/products')
         } else {
@@ -59,13 +60,14 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/logout', (req, res) => {
-    req.session.destroy(error => {
-        if (!error) {
-            res.redirect('/api/session')
+    req.session.destroy((error) => {
+        if (error) {
+            console.error('Error al destruir la sesión:', error);
+            res.status(500).json({ status: 'Logout Error', error });
         } else {
-            res.send({ status: 'Logout ERROR', body: error })
+            res.status(200).json({ status: 'success' })
         }
-    })
-})
+    });
+});
 
 module.exports = router;

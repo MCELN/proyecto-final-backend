@@ -1,45 +1,60 @@
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addToCartButtons = document.querySelectorAll('.addToCart');
-    const logout = document.getElementById('logout');
+const addToCartButtons = document.querySelectorAll('.addToCart');
+const logout = document.getElementById('logout');
 
-    logout.addEventListener('click', async (e) => {
-        await fetch('/api/session/logout', {
-            method: 'Delete',
+logout.addEventListener('click', async (e) => {
+    try {
+        const response = await fetch('/api/session/logout', {
+            method: 'DELETE',
         });
-    });
 
-    addToCartButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const productId = button.getAttribute('productId');
-            const cartId = button.getAttribute('cartId');
+        if (response.ok) {
+            window.location.href = '/api/session';
+        } else {
+            console.log('Error al cerrar sesión');
+        }
 
-            const requestData = {
-                method: 'Post',
-            };
+    } catch (error) {
+        console.log('Error al cerrar sesión', error)
+    }
+});
 
-            fetch(`/api/carts/${cartId}/product/${productId}`, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                method: 'Put',
-                body: JSON.stringify({
-                    quantity: 1,
+addToCartButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+        const productId = button.getAttribute('productId');
+        const cartId = button.getAttribute('cartId');
+
+        const requestData = {
+            method: 'POST',
+        };
+
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                quantity: 1,
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error al agregar el producto al carrito.');
+                }
+            })
+            .then(function (data) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Producto agregado al carrito con éxito.',
+                    showConfirmButton: false,
+                    timer: 2000
                 })
             })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error al agregar el producto al carrito.');
-                    }
-                })
-                .then(function (data) {
-                    alert('Producto agregado al carrito con éxito.');
-                })
-                .catch(function (error) {
-                    alert(error.message);
-                });
-        });
+            .catch(function (error) {
+                alert(error.message);
+            });
     });
 });

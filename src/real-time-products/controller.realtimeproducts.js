@@ -1,18 +1,19 @@
-const { Router } = require( 'express' );
-const Products   = require( '../DAOs/mongodb/products.dao')
+const { Router } = require('express');
+const Products = require('../DAOs/mongodb/products.dao');
+const protectedRoute = require('../middlewares/protected-route');
 
 const ProductsDao = new Products();
 
 const router = Router();
 
-router.get( '/', async ( req, res ) => {
+router.get('/', protectedRoute, async (req, res) => {
     try {
         const products = await ProductsDao.findAll();
         const serializedMessages = products.map(product => product.serialize());
 
-        res.render( 
-            'realtimeproducts', 
-            { 
+        res.render(
+            'realtimeproducts',
+            {
                 serializedMessages,
                 style: 'home.css',
             }

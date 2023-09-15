@@ -1,11 +1,12 @@
-const { Router } = require( 'express' );
-const Products = require( '../DAOs/mongodb/products.dao' );
+const { Router } = require('express');
+const Products = require('../DAOs/mongodb/products.dao');
+const protectedRoute = require('../middlewares/protected-route');
 
 const ProductsDao = new Products;
 
 const router = Router();
 
-router.get( '/', async ( req, res ) => {
+router.get('/', protectedRoute, async (req, res) => {
     try {
         const { limit = 10, page = 1, sort, query } = req.query;
 
@@ -13,19 +14,19 @@ router.get( '/', async ( req, res ) => {
 
         let filter = {};
 
-        if(query) {
+        if (query) {
             if (query === 'false' || query === 'true') {
-                filter = {status: query}
+                filter = { status: query }
             } else {
-                filter = { category: query};
+                filter = { category: query };
             }
         }
 
         const sortO = {};
 
-        if(sort === 'asc') {
+        if (sort === 'asc') {
             sortO.price = 1;
-        } else if( sort === 'desc') {
+        } else if (sort === 'desc') {
             sortO.price = -1;
         }
 
@@ -33,20 +34,20 @@ router.get( '/', async ( req, res ) => {
             limit,
             page,
             sort: sortO,
-        };       
-        
+        };
+
         const products = await ProductsDao.findAll()
         const serializedMessages = products.map(product => product.serialize());
 
-        res.render( 
-            'home', 
-            { 
+        res.render(
+            'home',
+            {
                 serializedMessages,
                 style: 'home.css',
-            } 
-        )      
+            }
+        )
     } catch (error) {
-        res.status(500).json({error: 'Error al obtener los productos.'});
+        res.status(500).json({ error: 'Error al obtener los productos.' });
     }
 })
 
