@@ -1,9 +1,5 @@
 const { Router } = require('express');
-const Users = require('../DAOs/mongodb/users.dao');
-const { compareSync } = require('bcrypt');
 const passport = require('passport');
-
-const UsersDao = new Users();
 
 const router = Router();
 
@@ -38,5 +34,22 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/faillo
 router.get('/faillogin', (req, res) => {
     res.json({ status: 'error', error: 'Failed login' });
 });
+
+router.get('/github', passport.authenticate('github', { scope: ['user: email'] }), async (req, res) => {
+
+})
+
+
+router.get('/githubcallback', (req, res) => {
+
+})
+
+//Owned by: @cristianlanza
+
+//App ID: 390989
+
+//Client ID: Iv1.2eadc843dd68aadc
+
+//secret: 2e67a585cf186d89c0a1cf9e5272515fe4019503
 
 module.exports = router;

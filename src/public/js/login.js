@@ -32,9 +32,9 @@ loginForm.addEventListener('submit', async (e) => {
                 showConfirmButton: false,
                 timer: 2000
             })
-                .then(() => {
-                    window.location.href = '/products';
-                })
+            // .then(() => {
+            //     window.location.href = '/products';
+            // })
         } else {
             console.log(userSession);
         }
