@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const Users = require('../DAOs/mongodb/users.dao');
-const { getHashedPassword } = require('../routes/utils/bcrypt');
+const { getHashedPassword } = require('../utils/bcrypt');
 
 const UsersDao = new Users();
 const router = Router();

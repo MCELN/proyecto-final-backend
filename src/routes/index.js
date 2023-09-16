@@ -7,6 +7,7 @@ const prodViewsController = require('../products/controller.prodViews');
 const cartVieweController = require('../cart/controller.cartViews');
 const loginController = require('../login/controller.login');
 const registerController = require('../register/controller.register');
+const authController = require('../auth/controller.auth');
 
 
 const router = (app) => {
@@ -19,6 +20,7 @@ const router = (app) => {
     app.use('/carts', cartVieweController);
     app.use('/api/session', loginController);
     app.use('/api/session/register', registerController);
+    app.use('/auth', authController);
     app.use('*', (req, res) => {
         res.status(404).render('notfound', { style: 'notfound.css' });
     });

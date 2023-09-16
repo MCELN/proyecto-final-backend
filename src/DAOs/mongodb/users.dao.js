@@ -1,8 +1,9 @@
 const Users = require('../../models/user.model');
 
 class UsersDao {
-    async findOne(email) {
-        return await Users.findOne({ email: email })
+    async findOne(prop) {
+        const user = await Users.findOne(prop)
+        return user;
     }
     async findOneRaw(email) {
         return await Users.findOne({ email: email }).lean();
@@ -10,9 +11,8 @@ class UsersDao {
 
     async insertOne(newUserInfo) {
         const newUser = await Users.create(newUserInfo);
-        return newUser.first_name;
+        return newUser;
     }
-
 }
 
 module.exports = UsersDao;

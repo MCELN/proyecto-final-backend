@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const Users = require('../DAOs/mongodb/users.dao');
-const { comparePassword } = require('../routes/utils/bcrypt');
+const { comparePassword } = require('../utils/bcrypt');
 
 const UsersDao = new Users();
 
@@ -37,8 +37,6 @@ router.post('/', async (req, res) => {
             }
         }
 
-        console.log(user);
-
         if (!user) {
             res.render('login', {
                 style: 'home.css',
@@ -54,7 +52,7 @@ router.post('/', async (req, res) => {
             });
         }
     } catch (error) {
-        res.status(500).json({ error: error });
+        res.status(500).json({ status: 'error', error: 'Internal error' });
     };
 
 });
@@ -62,8 +60,7 @@ router.post('/', async (req, res) => {
 router.delete('/logout', (req, res) => {
     req.session.destroy((error) => {
         if (error) {
-            console.error('Error al destruir la sesión:', error);
-            res.status(500).json({ status: 'Logout Error', error });
+            res.status(500).json({ status: 'Logout Error', error: 'Error al cerrar sesión' });
         } else {
             res.status(200).json({ status: 'success' })
         }

@@ -12,7 +12,7 @@ const router = Router();
 
 router.get('/', protectedRoute, async (req, res) => {
     try {
-        const user = await UsersDao.findOneRaw(req.session.user);
+        const user = await UsersDao.findOneRaw(req.session.user.email);
         if (req.session.counter) {
             req.session.counter += 1;
         } else {
