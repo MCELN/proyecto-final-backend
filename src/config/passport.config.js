@@ -76,8 +76,6 @@ const initializePassport = () => {
         callbackURL: github.callbackURL,
     }, async (accessToken, refreshToken, profile, done) => {
         try {
-            console.log(profile)
-
             const user = await UsersDao.findOne({ email: profile._json.email });
 
             if (!user) {
@@ -94,9 +92,9 @@ const initializePassport = () => {
                 return done(null, newUser);
             }
 
-            done(null, user);
+            return done(null, user);
         } catch (error) {
-            done(null, error);
+            return done(null, error);
         }
     }))
 

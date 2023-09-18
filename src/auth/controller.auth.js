@@ -40,8 +40,9 @@ router.get('/github', passport.authenticate('github', { scope: ['user: email'] }
 })
 
 
-router.get('/githubcallback', (req, res) => {
-
+router.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/products')
 })
 
 //Owned by: @cristianlanza

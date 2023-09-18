@@ -12,7 +12,8 @@ const router = Router();
 
 router.get('/', protectedRoute, async (req, res) => {
     try {
-        const user = await UsersDao.findOneRaw(req.session.user.email);
+        console.log(req.session.user + ' productsView')
+        const user = await UsersDao.findOne(req.session.user.email);
         if (req.session.counter) {
             req.session.counter += 1;
         } else {
@@ -74,7 +75,7 @@ router.get('/', protectedRoute, async (req, res) => {
             }
         )
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los productos.' });
+        return res.status(500).json({ error: 'Error al obtener los productos.' });
     }
 })
 
