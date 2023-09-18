@@ -16,13 +16,13 @@ const userAdmin = {
 }
 
 router.get('/', async (req, res) => {
-    if (req.session.user) {
-        res.redirect('/products');
-    } else {
-        res.render('login', {
-            style: 'home.css',
-        });
-    }
+    //if (req.session.user) {
+    //    res.redirect('/products');
+    //} else {
+    res.render('login', {
+        style: 'home.css',
+    });
+    //}
 });
 
 router.post('/', async (req, res) => {

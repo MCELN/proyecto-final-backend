@@ -52,7 +52,7 @@ const initializePassport = () => {
                 const user = await UsersDao.findOne({ email: username });
 
                 if (!user) {
-                    console.log("User doesn't exist");
+                    console.log("Contraseña o usuario incorrecto");
                     return done(null, false);
                 }
 

@@ -40,7 +40,8 @@ router.post('/', async (req, res) => {
                 status: 'user',
             }
             const newUser = await UsersDao.insertOne(newUserInfo);
-            res.redirect('/api/session')
+
+            res.status(201).json({ status: 'success', payload: newUser._id })
         }
     } catch (error) {
         res.status(500).json({ error: error });

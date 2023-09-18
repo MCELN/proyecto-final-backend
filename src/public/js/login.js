@@ -10,16 +10,13 @@ loginForm.addEventListener('submit', async (e) => {
 
         formData.forEach((value, key) => obj[key] = value);
 
-        const headers = {
-            'Content-Type': 'application/json',
-        };
-        const method = 'POST';
-        const body = JSON.stringify(obj);
 
         const response = await fetch('/auth/login', {
-            headers,
-            method,
-            body,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify(obj),
         });
 
         const userSession = await response.json();
