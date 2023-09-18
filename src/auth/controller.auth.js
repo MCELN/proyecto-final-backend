@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const router = Router();
 
-router.post('/register', passport.authenticate('register', { failureRedirect: '/failregister' }), async (req, res) => {
+router.post('/register', passport.authenticate('register', { successRedirect: '/api/session', failureRedirect: '/api/session' }), async (req, res) => {
     try {
         res.status(201).json({ status: 'success', payload: req.user });
     } catch (error) {
@@ -15,7 +15,7 @@ router.get('/failregister', (req, res) => {
     res.json({ status: 'error', error: 'Failed register' });
 })
 
-router.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin' }), async (req, res) => {
+router.post('/login', passport.authenticate('login', { successRedirect: '/products', failureRedirect: '/faillogin' }), async (req, res) => {
     try {
         if (!req.user) return res.status(400).json({ status: 'error', error: 'Invalid credentials' });
 
@@ -24,6 +24,8 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/faillo
             email: req.user.email,
             status: req.user.status,
         };
+
+        console.log(req.session.user);
 
         res.status(201).json({ status: 'success', payload: req.session.user })
     } catch (error) {

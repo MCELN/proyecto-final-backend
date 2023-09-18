@@ -38,6 +38,6 @@ loginForm.addEventListener('submit', async (e) => {
 
 
     } catch (error) {
-        console.log(`Error: ${error}`);
+        console.error('Error solicitud: ', error);
     }
 })

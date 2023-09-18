@@ -35,10 +35,10 @@ const initializePassport = () => {
 
                 const newUser = await UsersDao.insertOne(userInfo);
 
-                done(null, newUser);
+                return done(null, newUser);
 
             } catch (error) {
-                done(`Error al crear al usuario: ${error}`)
+                return done(`Error al crear al usuario: ${error}`)
             }
         }
     ))
@@ -47,7 +47,10 @@ const initializePassport = () => {
         { usernameField: 'email' },
         async (username, password, done) => {
             try {
-                if (!username || !password) return done(null, false);
+                if (!username || !password) {
+                    console.log('Ambos campos son necesarios.')
+                    return done(null, false);
+                }
 
                 const user = await UsersDao.findOne({ email: username });
 

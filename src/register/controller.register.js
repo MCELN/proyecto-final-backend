@@ -15,37 +15,37 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
-    const { first_name, last_name, email, age, pass } = req.body;
+// router.post('/', async (req, res) => {
+//     const { first_name, last_name, email, age, pass } = req.body;
 
-    try {
-        const user = await UsersDao.findOne(email)
-        if (!first_name || !last_name || !email || !age || !pass) {
-            res.render('register', {
-                style: 'home.css',
-                response: 'Todos los campos son requeridos',
-            })
-        } else if (user) {
-            res.render('register', {
-                style: 'home.css',
-                response: 'El E-Mail está siendo utilizado.',
-            })
-        } else {
-            const newUserInfo = {
-                first_name,
-                last_name,
-                email,
-                age,
-                password: getHashedPassword(pass),
-                status: 'user',
-            }
-            const newUser = await UsersDao.insertOne(newUserInfo);
+//     try {
+//         const user = await UsersDao.findOne(email)
+//         if (!first_name || !last_name || !email || !age || !pass) {
+//             res.render('register', {
+//                 style: 'home.css',
+//                 response: 'Todos los campos son requeridos',
+//             })
+//         } else if (user) {
+//             res.render('register', {
+//                 style: 'home.css',
+//                 response: 'El E-Mail está siendo utilizado.',
+//             })
+//         } else {
+//             const newUserInfo = {
+//                 first_name,
+//                 last_name,
+//                 email,
+//                 age,
+//                 password: getHashedPassword(pass),
+//                 status: 'user',
+//             }
+//             const newUser = await UsersDao.insertOne(newUserInfo);
 
-            res.status(201).json({ status: 'success', payload: newUser._id })
-        }
-    } catch (error) {
-        res.status(500).json({ error: error });
-    }
-});
+//             res.status(201).json({ status: 'success', payload: newUser._id })
+//         }
+//     } catch (error) {
+//         res.status(500).json({ error: error });
+//     }
+// });
 
 module.exports = router;
